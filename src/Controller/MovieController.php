@@ -21,27 +21,14 @@ class MovieController extends AbstractController{
     }
     
     /**
-     *@Route("/movie", name="movie.index" )
+     *@Route("/allmovies", name="allMovies.index" )
      *@return Response
      */
     public function index(): Response
     {
-       $movie = $this->repository->findall();
-        // $movie = new Movie;
-        // $movie->setTitle("Kamelott")
-        //         ->setDescription("recherche du Graal livre I")
-        //         ->setTemps("3 heures")
-        //         ->setMusique("Tududu")
-        //         ->setRealisateur("Alexandre Astier")
-        //         ->setActeur("Famille Astier")
-        //         ->setVu(true)
-        //         ->setGenre(1);
-        //         $em = $this->getDoctrine()->getManager();
-        //         $em->persist($movie);
-        //         $em->flush();
-
-        return $this->render('movie/movie.html.twig',
-                     [ "current_menu" => "movie" ]);
+       $movies = $this->repository->findall();
+        return $this->render('movie/allMovies.html.twig',
+                     [ "movies" => $movies ]);
     }
 
 

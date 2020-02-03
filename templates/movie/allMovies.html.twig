@@ -2,7 +2,7 @@
 
 {% block body %}
 <div class="jumbotron text-center">
-            c
+        {% for movie in movies %}
         <h1>Films</h1>
         <p>{{ movie.Title}}</p>
     </div>
@@ -32,4 +32,6 @@
             </div>
         </div>
     </div>
+            
+        {% endfor %}
 {% endblock %}

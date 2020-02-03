@@ -4,7 +4,7 @@ security:
         from_database:
             entity:
                 class: App\Entity\User
-                vod: username
+                property: username
 
 
     firewalls:
@@ -13,12 +13,16 @@ security:
             security: false
         main:
             anonymous: true
+            logout:
+                path: /logout
+                target: /
 
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
             
-            form_login: true
+            form_login: 
+                check_path: login
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
 
@@ -28,4 +32,7 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
-    # encoders:
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
+            cost: 12
