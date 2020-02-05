@@ -3,11 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Movie;
+use App\Entity\MovieSearch;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\MovieRepository;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Form\MovieSearchType;
+use Knp\Component\Pager\PaginatorInterface;
 
 class MovieController extends AbstractController{
 
@@ -24,11 +28,14 @@ class MovieController extends AbstractController{
      *@Route("/allmovies", name="allMovies.index" )
      *@return Response
      */
-    public function index(): Response
+    public function index(PaginatorInterface $paginator, Request $request): Response
     {
-       $movies = $this->repository->findall();
-        return $this->render('movie/allMovies.html.twig',
-                     [ "movies" => $movies ]);
+        $search = new MovieSearch();
+        $form = $this->createForm(MovieSearchType::class, $search);
+        $form->handleRequest($request);
+
+        $movies = $paginator->paginate($this->repository->findAllVisibleQuery($search), $request->query->getInt('page', 1), 2);
+        return $this->render('movie/allMovies.html.twig', [ "movies" => $movies, 'form' => $form->createView() ]);
     }
 
 
@@ -37,12 +44,12 @@ class MovieController extends AbstractController{
      * @param Movie $movie
      * @return Response
      */
-    public function show(Movie $movie, string $slug): Response
+    public function show(Movie $movies, string $slug): Response
     {
-        if ($movie->getSlug()!== $slug) {
-            return $this->redirectToroute('movie.show', ['id' => $movie->getId(), 'slug' => $movie->getSlug()], 301 );
+        if ($movies->getSlug()!== $slug) {
+            return $this->redirectToroute('movie.show', ['id' => $movies->getId(), 'slug' => $movies->getSlug()], 301 );
         }
-        return $this->render('movie/movie.html.twig', ['movie' => $movie]);
+        return $this->render('movie/movie.html.twig', ['movies' => $movies]);
     }
     
 

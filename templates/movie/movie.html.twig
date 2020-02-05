@@ -2,18 +2,17 @@
 
 {% block body %}
 <div class="jumbotron text-center">
-            c
         <h1>Films</h1>
-        <p>{{ movie.Title}}</p>
+        <p>{{ movies.Title}}</p>
     </div>
     <div class="jumbotron text-center">    
         <div class="row">
             <div class="col-md-4">
-                <h1 class ="text-primary" style="font-size: 4rem; font-weight:old;"> {{movie.Title}}</h1>
-                <h2> Le Réalisateur : {{movie.realisateur}}.</h2>
-                <p>Avec la participation de : {{movie.acteur}}.
-                <p class="card-text">Durée du film : {{movie.temps}} </p>
-                <p> Type : {{movie.genreType}}</p>
+                <h1 class ="text-primary" style="font-size: 4rem; font-weight:old;"> {{movies.Title}}</h1>
+                <h2> Le Réalisateur : {{movies.realisateur}}.</h2>
+                <p>Avec la participation de : {{movies.acteur}}.
+                <p class="card-text">Durée du film : {{movies.temps}} </p>
+                <p> Type : {{movies.genreType}}</p>
                 <a href="#" class="btn btn-primary">REGARDER</a>
             </div>
         </div>
@@ -21,9 +20,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8">
-            <h2>{{ movie.description}}</h2> 
+            <h2>{{ movies.description}}</h2> 
                 <div>
-                    {% if movie.vu == 1 %}
+                    {% if movies.vu == 1 %}
                         <p>Film déja vu !!</p>
                     {% else %}
                         <p>Si tu la pas vu c'est bizarre xD</p>

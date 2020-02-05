@@ -1,0 +1,15 @@
+
+                <h1 class ="text-primary" style="font-size: 4rem; font-weight:old;"> {{movie.Title}}</h1>
+                <h2> Le Réalisateur : {{movie.realisateur}}.</h2>
+                <p>Avec la participation de : {{movie.acteur}}.
+                <p class="card-text">Durée du film : {{movie.temps}} </p>
+                <p> Type : {{movie.genreType}}</p>
+                <a href="#" class="btn btn-primary">REGARDER</a>
+                <h2>{{ movie.description}}</h2> 
+                    <div>
+                        {% if movie.vu == 1 %}
+                            <p>Film déja vu !!</p>
+                        {% else %}
+                            <p>Si tu la pas vu c'est bizarre xD</p>
+                        {% endif %}        
+                    </div>

@@ -10,12 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\MovieType;
+use Knp\Component\Pager\PaginatorInterface;
 
 
 class AdminMovieController extends AbstractController{
 
-    private $repository;
-    private $em;
+    private $title;
+    private $temps;
     
     public function __construct(MovieRepository $repository, EntityManagerInterface $em)
     {
@@ -27,27 +28,25 @@ class AdminMovieController extends AbstractController{
      * @Route("/admin", name="admin.movie.index")
      * @var Symfony\Component\HttpFoundation\Response;
     */
-    public function index(): Response
-    {
-        $movies = $this->repository->findall();
+    public function index(PaginatorInterface $paginator, Request $request): Response
+    {        
+        $movies = $paginator->paginate($this->repository->findAllVisibleQuery(), $request->query->getInt('page', 1), 4);
         return $this->render('admin/movie/index.html.twig', ['movies' => $movies] );
     }
 
     /**
      * @route ("/admin/movie/create", name="admin.movie.new")
      */
-
     public function new( Request $request ){
-
         $movies = new Movie();
         $form = $this->createForm(MovieType::class, $movies);
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid() ) {
-        $this->em->persist($movies);
-        $this->em->flush();
-        $this->addFlash('success', "Bien ajouter");
-        return $this->redirectToRoute('admin.movie.index');
+            $this->em->persist($movies);
+            $this->em->flush();
+            $this->addFlash('success', "Bien ajouter");
+            return $this->redirectToRoute('admin.movie.index');
         }
         return $this->render('admin/movie/new.html.twig', 
         ['movies' => $movies,

@@ -21,7 +21,18 @@ class MovieRepository extends ServiceEntityRepository
         parent::__construct($registry, Movie::class);
     }
 
-    public function findAllVisible(){
+    
+
+    public function findAllSearch($value){
+        return $this->createVisibleQuery()
+        ->where('m.title = :val', 
+                 'm.temps= :val')
+        ->getQuery()
+        ->getResult()
+    ;
+    }
+
+    public function findAllVisibleQuery(){
         return $this->createVisibleQuery()
         ->getQuery()
         ->getResult()
@@ -38,7 +49,7 @@ class MovieRepository extends ServiceEntityRepository
 
     private function createVisibleQuery(){
         return $this->createQueryBuilder('m')
-                    ->where('m.vu = 2');
+                    ->where('m.vu = 0');
     }
     
     // /**
